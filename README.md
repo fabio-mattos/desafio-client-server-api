@@ -1,7 +1,7 @@
 # Desafio-Client-Server-API
 Olá dev, tudo bem?
  
-Neste desafio vamos aplicar o que aprendemos sobre webserver http, contextos,
+Neste desafio vou  aplicar o que aprendi sobre webserver http, contextos,
 banco de dados e manipulação de arquivos com Go.
  
 Você precisará nos entregar dois sistemas em Go:
