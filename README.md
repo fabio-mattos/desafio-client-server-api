@@ -1,10 +1,10 @@
 # Desafio-Client-Server-API
 Olá dev, tudo bem?
  
-Neste desafio do curso Go Expert eu vou aplicar o que aprendi sobre webserver http, contextos,
+Neste desafio vamos aplicar o que aprendemos sobre webserver http, contextos,
 banco de dados e manipulação de arquivos com Go.
  
-Desenvolvi dois sistemas em Go:
+Você precisará nos entregar dois sistemas em Go:
 - client.go
 - server.go
  
