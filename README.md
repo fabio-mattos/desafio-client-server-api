@@ -1,13 +1,14 @@
-# desafio-client-server-api
+# Desafio-Client-Server-API
+Olá dev, tudo bem?
  
-Neste desafio vamos aplicar o que aprendemos sobre webserver http, contextos,
+Neste desafio do curso Go Expert eu vou aplicar o que aprendi sobre webserver http, contextos,
 banco de dados e manipulação de arquivos com Go.
  
-Você precisará nos entregar dois sistemas em Go:
+Desenvolvi dois sistemas em Go:
 - client.go
 - server.go
  
-Os requisitos para cumprir este desafio são:
+Os requisitos exigidos pelo desafio eram:
  
 O client.go deverá realizar uma requisição HTTP no server.go solicitando a cotação do dólar.
  
@@ -19,6 +20,5 @@ O client.go precisará receber do server.go apenas o valor atual do câmbio (cam
  
 O client.go terá que salvar a cotação atual em um arquivo "cotacao.txt" no formato: Dólar: {valor}
  
-O endpoint necessário gerado pelo server.go para este desafio será: /cotacao e a porta a ser utilizada pelo servidor HTTP será a 8080.
- 
-Ao finalizar, envie o link do repositório para correção.
+O endpoint necessário gerado pelo server.go para este desafio será: /cotacao e a porta a ser utilizada pelo servidor HTTP será a 8080. 
+
