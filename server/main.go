@@ -37,21 +37,21 @@ func main() {
 }
 func cotaHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	ctx, cancel := context.WithTimeout(r.Context(), 2000*time.Millisecond)
+	ctx, cancel := context.WithTimeout(r.Context(), 200*time.Millisecond)
 	defer cancel()
 
 	var cot map[string]Cotacaodb
 	cot, err := BuscaCotacao(ctx)
 	if err != nil {
-		panic(fmt.Sprintf("Erro ao buscar cotação %v", err))
+		panic(fmt.Sprintf("Não foi possíver buscar a cotação %v", err))
 	}
 
 	ctx = nil
-	ctx, _ = context.WithTimeout(context.Background(), 10*time.Nanosecond)
+	ctx, _ = context.WithTimeout(context.Background(), 10*time.Millisecond)
 
-	err = salvCota(ctx, cot)
+	err = GravandoCotacaoNoBanco(ctx, cot)
 	if err != nil {
-		panic(fmt.Sprintf("Erro ao salvar cotação %v", err))
+		panic(fmt.Sprintf("Não foi possível gravar a cotação %v no banco de dados!", err))
 	}
 	dol := Dolar{Bid: cot["USDBRL"].Bid}
 
@@ -85,7 +85,7 @@ func BuscaCotacao(c context.Context) (map[string]Cotacaodb, error) {
 
 	return data, nil
 }
-func salvCota(c context.Context, cota map[string]Cotacaodb) error {
+func GravandoCotacaoNoBanco(c context.Context, cota map[string]Cotacaodb) error {
 	db, err := sql.Open("sqlite3", "cotacao.db")
 	if err != nil {
 		return err
@@ -135,6 +135,6 @@ func salvCota(c context.Context, cota map[string]Cotacaodb) error {
 	}
 
 	fmt.Println(lastID)
-	fmt.Println("table data created")
+	fmt.Println("Tabela criada com sucesso!")
 	return nil
 }
