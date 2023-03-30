@@ -56,7 +56,6 @@ func cotaHandler(w http.ResponseWriter, r *http.Request) {
 	dol := Dolar{Bid: cot["USDBRL"].Bid}
 
 	json.NewEncoder(w).Encode(dol)
-
 }
 
 func BuscaCotacao(c context.Context) (map[string]Cotacaodb, error) {
