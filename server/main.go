@@ -40,8 +40,8 @@ func cotaHandler(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 200*time.Millisecond)
 	defer cancel()
 
-	var cot map[string]Cotacaodb
-	cot, err := BuscaCotacao(ctx)
+	var cotacaoAtual map[string]Cotacaodb
+	cotacaoAtual, err := BuscaCotacao(ctx)
 	if err != nil {
 		panic(fmt.Sprintf("Não foi possíver buscar a cotação %v", err))
 	}
@@ -49,11 +49,11 @@ func cotaHandler(w http.ResponseWriter, r *http.Request) {
 	ctx = nil
 	ctx, _ = context.WithTimeout(context.Background(), 10*time.Millisecond)
 
-	err = GravandoCotacaoNoBanco(ctx, cot)
+	err = GravandoCotacaoNoBanco(ctx, cotacaoAtual)
 	if err != nil {
 		panic(fmt.Sprintf("Não foi possível gravar a cotação %v no banco de dados!", err))
 	}
-	dol := Dolar{Bid: cot["USDBRL"].Bid}
+	dol := Dolar{Bid: cotacaoAtual["USDBRL"].Bid}
 
 	json.NewEncoder(w).Encode(dol)
 }
@@ -90,10 +90,15 @@ func GravandoCotacaoNoBanco(c context.Context, cota map[string]Cotacaodb) error 
 		return err
 	}
 
+	if c.Err() == context.DeadlineExceeded {
+		fmt.Println("Erro: O tempo para conectar com a base de dados foi excedido")
+		return err
+	}
+
 	defer db.Close()
 	cot := cota["USDBRL"]
 	sts := `
-	CREATE TABLE cotacao(id INTEGER PRIMARY KEY,code TEXT, codein TEXT, name TEXT, high TEXT, low TEXT, varbid TEXT, pctchange TEXT, bid TEXT, ask TEXT, timestamp TEXT, create_date TEXT);
+	CREATE TABLE IF NOT EXISTS cotacao(id INTEGER PRIMARY KEY,code TEXT, codein TEXT, name TEXT, high TEXT, low TEXT, varbid TEXT, pctchange TEXT, bid TEXT, ask TEXT, timestamp TEXT, create_date TEXT);
 			INSERT INTO
 				cotacao(
 					code,
@@ -134,6 +139,6 @@ func GravandoCotacaoNoBanco(c context.Context, cota map[string]Cotacaodb) error 
 	}
 
 	fmt.Println(lastID)
-	fmt.Println("Tabela criada com sucesso!")
+	fmt.Println("Tabela atualizada com sucesso!")
 	return nil
 }
