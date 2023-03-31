@@ -1,4 +1,4 @@
-module github.com/weslyramalho/Desafio-Client-Server-API
+module github.com/fabio-mattos/Desafio-Client-Server-API
 
 go 1.19
 
